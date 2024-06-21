@@ -1,0 +1,10 @@
+spring:
+  application.name: oauth-sample
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/medium-realm
+
+server:
+  port: 1234

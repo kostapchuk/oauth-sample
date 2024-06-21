@@ -1,0 +1,48 @@
+#version: "3"
+#
+#services:
+#  localhost:
+#    image: alpine:latest
+#    command: sleep infinity
+#    ports:
+#      - "8080:8080"
+#      - "1234:1234"
+#  remind-me:
+#    container_name: remind-me-app
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#    network_mode: "service:localhost"
+#
+#  keycloak-prod:
+#    image: quay.io/keycloak/keycloak:24.0.1
+#    network_mode: "service:localhost"
+#    environment:
+#      KEYCLOAK_ADMIN: admin
+#      KEYCLOAK_ADMIN_PASSWORD: admin
+#    command: start-dev
+
+
+services:
+  localhost:
+    image: alpine:latest
+    command: sleep infinity
+    ports:
+      - "8080:8080" #keycloak port
+      - "1234:1234" #oauth-sample port
+
+  oauth-sample:
+    container_name: oauth-sample
+    build:
+      context: .
+      dockerfile: Dockerfile
+    network_mode: "service:localhost"
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    container_name: keycloak
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    command: start-dev
+    network_mode: "service:localhost"
